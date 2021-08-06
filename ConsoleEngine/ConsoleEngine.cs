@@ -17,7 +17,7 @@ namespace ConsoleEngine
         /// <summary>
         /// Содержит информацию о индексе команды из истории, который меняется стрелками вниз-вверх
         /// </summary>
-        private static int HistoryOffset;
+        public static int HistoryOffset;
 
         /// <summary>
         /// Содержит число, обозначающее максимально возможное количество запоминаний ввода текста
@@ -32,14 +32,14 @@ namespace ConsoleEngine
         /// <summary>
         /// Текущий набранный текст
         /// </summary>
-        private static string CurrentText;
+        public static string CurrentText;
 
-        private static int RightOffset;
+        public static int RightOffset;
 
         /// <summary>
         /// Граница слева, откуда начинается печать текста. Необходима для вывода идентификатора.
         /// </summary>
-        private static int LeftBorder;
+        public static int LeftBorder;
 
         #endregion
 
@@ -50,8 +50,6 @@ namespace ConsoleEngine
             Console.ForegroundColor = Configs.OperatorPrefixColor;
             Console.Write(Configs.OperatorPrefix);
             Console.ForegroundColor = ConsoleColor.White;
-
-            //Cursor.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
 
             Cursor.Left = Console.CursorLeft;
             Cursor.Top = Console.CursorTop;
@@ -161,7 +159,7 @@ namespace ConsoleEngine
 
                     #region Логика изменения текста
 
-                    if(RightOffset == 0)
+                    if (RightOffset == 0)
                     {
                         continue;
                     }
@@ -198,7 +196,7 @@ namespace ConsoleEngine
 
                 if (key.Key == ConsoleKey.LeftArrow)
                 {
-                    if(RightOffset + 1 <= CurrentText.Length)
+                    if (RightOffset + 1 <= CurrentText.Length)
                     {
                         Cursor.MoveLeft(1);
                         RightOffset += 1;
@@ -209,7 +207,7 @@ namespace ConsoleEngine
 
                 if (key.Key == ConsoleKey.RightArrow)
                 {
-                    if(RightOffset - 1 >= 0)
+                    if (RightOffset - 1 >= 0)
                     {
                         Cursor.MoveRight(1);
                         RightOffset -= 1;
@@ -227,7 +225,7 @@ namespace ConsoleEngine
                     else
                     {
                         string clearText = "";
-                        for(int i = 0; i < CurrentText.Length; i += 1)
+                        for (int i = 0; i < CurrentText.Length; i += 1)
                         {
                             clearText += " ";
                         }
@@ -350,7 +348,7 @@ namespace ConsoleEngine
                     //отчищаем текст с места изменения и с этого места пишем измененную строку
 
                     string clearString = "";
-                    for(int i = 0; i < RightOffset; i += 1)
+                    for (int i = 0; i < RightOffset; i += 1)
                     {
                         clearString += " ";
                     }

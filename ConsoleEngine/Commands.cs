@@ -26,24 +26,33 @@ namespace ConsoleEngine
             { "White", ConsoleColor.White },
         };
 
-        public static Dictionary<string, string> EngineCmds = new Dictionary<string, string>
+        /// <summary>
+        /// Список команд движка консоли <команда, описание>
+        /// </summary>
+        public static Dictionary<string, string> EngineCommands = new Dictionary<string, string>
         {
             { "Exit", "выйти из программы" },
             { "Clear", "очистить консоль" },
             { "Console.Change.Title", "изменить название консоли" },
-            { "Console.Change.Operator.Name", "изменить название консоли" },
-            { "Console.Change.Operator.Prefix", "изменить название консоли" },
-            { "Console.Change.HistoryCount", "изменить название консоли" },
-            { "Console.Change.Color.Text.Input", "изменить название консоли" },
-            { "Console.Change.Color.Text.Printed", "изменить название консоли" },
-            { "Console.Change.Color.Operator.Name", "изменить название консоли" },
-            { "Console.Change.Color.Operator.Prefix", "изменить название консоли" },
-            { "Console.Change.Color.Command.Text", "изменить название консоли" },
-            { "Console.Change.Color.Command.Splitters", "изменить название консоли" },
-            { "Console.Change.Color.Command.Args", "изменить название консоли" },
-            { "Console.Change.CursorSize", "изменить название консоли" },
-            { "Console.ShowColors", "изменить название консоли" },
+            { "Console.Change.Operator.Name", $"изменить имя пользователя в консоли ({Configs.OperatorName} по умолчанию)" },
+            { "Console.Change.Operator.Prefix", $"изменить префикс пользователя в консоли ({Configs.OperatorPrefix} по умолчанию)" },
+            { "Console.Change.HistoryCount", $"изменить количество запоминаемых команд ({Configs.HistoryCount} по умолчанию)" },
+            { "Console.Change.Color.Text.Input", "изменить цвет вводимого текста" },
+            { "Console.Change.Color.Text.Printed", "изменить цвет выводимого (напечатанного) текста" },
+            { "Console.Change.Color.Operator.Name", "изменить цвет, которым печается имя оператора" },
+            { "Console.Change.Color.Operator.Prefix", "изменить цвет, которым печается префикс оператора" },
+            { "Console.Change.Color.Command.Text", "изменить цвет зарезирвированных команд" },
+            { "Console.Change.Color.Command.Splitters", "изменить цвет разделителей команд (в командах, в которых есть аргументы)" },
+            { "Console.Change.Color.Command.Args", "изменить цвет аргументов команд (в командах, в которых есть аргументы)" },
+            { "Console.Change.CursorSize", $"изменить высоту курсора ({Configs.CursorSize} по умолчанию)" },
+            { "Console.ShowColors", "показать доступные цвета" },
         };
+
+
+        /// <summary>
+        /// Команды, которые можно встроить извне, и методы для них. Для создания метода используйте Action actionName = new Action(() => { ... });
+        /// </summary>
+        public static Dictionary<Dictionary<string, string>, Action> AdditionalCommands = new Dictionary<Dictionary<string, string>, Action>();
 
         public static void Exit()
         {
@@ -53,13 +62,21 @@ namespace ConsoleEngine
         public static void Clear()
         {
             Console.Clear();
-            Cursor.SetCursorPosition(0, 0);
+            Cursor.SetPosition(0, 0);
 
             #region Инициализация
 
-            Console.SetWindowSize(Configs.DefaultWidth, Configs.DefaultHeight);
+            try
+            {
+                Console.SetWindowSize(Configs.DefaultWidth, Configs.DefaultHeight);
+            }
+            catch { }
             Console.SetBufferSize(Configs.DefaultWidth, Configs.DefaultHeight);
-            Console.CursorSize = Configs.CursorSize;
+            try
+            {
+                Console.CursorSize = Configs.CursorSize;
+            }
+            catch { }
 
             ConsoleEngine.LeftBorder = Configs.OperatorName.Length + Configs.OperatorPrefix.Length;
             if (ConsoleEngine.LeftBorder > Configs.MinWidth)

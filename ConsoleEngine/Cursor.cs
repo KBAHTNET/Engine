@@ -29,7 +29,7 @@ namespace ConsoleEngine
 
             Top -= Up;
             Left = Left - (count - (Console.BufferWidth * Up));
-            SetCursorPosition(Left, Top);
+            SetPosition(Left, Top);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace ConsoleEngine
         {
             Top += (Left + count) / Console.BufferWidth;
             Left = (Left + count) % Console.BufferWidth;
-            SetCursorPosition(Left, Top);
+            SetPosition(Left, Top);
         }
 
         /// <summary>
@@ -48,11 +48,15 @@ namespace ConsoleEngine
         /// </summary>
         /// <param name="left">Смещение слева-направо</param>
         /// <param name="top">Смещение сверху-вниз</param>
-        public static void SetCursorPosition(int left, int top)
+        public static void SetPosition(int left, int top)
         {
             if(top + left / Console.BufferWidth + 1 >= Console.BufferHeight)
             {
-                Console.SetBufferSize(Console.BufferWidth, Console.BufferHeight + 1);
+                try
+                {
+                    Console.SetBufferSize(Console.BufferWidth, Console.BufferHeight + 1);
+                }
+                catch { }
             }
             Console.SetCursorPosition(left % Console.BufferWidth, top + left / Console.BufferWidth);
             Left = Console.CursorLeft;
